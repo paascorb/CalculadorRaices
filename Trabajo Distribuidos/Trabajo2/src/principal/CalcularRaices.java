@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 public class CalcularRaices extends Thread{
 	
 	private Socket s;
-	private ArrayList<Float> polinomio;
+	private ArrayList<Double> polinomio;
 	
-	public CalcularRaices(Socket s,ArrayList<Float> polinomio) {
+	public CalcularRaices(Socket s,ArrayList<Double> polinomio) {
 		this.s = s;
 		this.polinomio = polinomio;
 	}
@@ -24,57 +24,62 @@ public class CalcularRaices extends Thread{
 		//3º (puramente educativo) buscamos posibles raíces enteras usando la regla de Horner.
 		//4º aplicamos sturm para obtener la secuencia del mismo {P(x),P1(x),...,Pn(x)} donde P es nuestro polinomio, P1 su derivada y 
 		//Pk(x) es el resto cambiado de signo de Pk-2(x)/Pk-1(x) para 2<=k<=n.
-		int maxRaicesPositivas,maxRaicesNegativas;
 		int NumCambiosDeSignoRNeg=0,NumCambiosDeSignoRPos=0;
 		
 		//Aplicamos la regla de signos de Descartes
-		for(int i=0; i<this.polinomio.size()-1; i++) {
-			if(this.polinomio.get(i)*this.polinomio.get(i+1)<0) {
-				NumCambiosDeSignoRPos++;
-			}else {
-				if(i%2 == 0) {
-					if(this.polinomio.get(i)*(-1*this.polinomio.get(i+1))<0) {
-						NumCambiosDeSignoRNeg++;
-					}
-				}else {
-					if(this.polinomio.get(i+1)*(-1*this.polinomio.get(i))<0) {
-						NumCambiosDeSignoRNeg++;
-					}
-				}
-				
+		ArrayList<Double> Descartes = new ArrayList();
+		ArrayList<Double> DescartesNeg = new ArrayList();
+		for(int i=0; i<this.polinomio.size(); i++) {
+			if(this.polinomio.get(i)!=0) {
+				Descartes.add(this.polinomio.get(i));
+				if(i%2==0) {
+					DescartesNeg.add(this.polinomio.get(i));
+				}else
+					DescartesNeg.add(this.polinomio.get(i)*-1);
 			}
 		}
-		maxRaicesPositivas=NumCambiosDeSignoRPos;
-		maxRaicesNegativas=NumCambiosDeSignoRNeg;
+		for(int i=0;i<Descartes.size()-1;i++) {	
+			if(Descartes.get(i)*Descartes.get(i+1)<0) {
+				NumCambiosDeSignoRPos++;
+			}
+			if(DescartesNeg.get(i)*DescartesNeg.get(i+1)<0)
+				NumCambiosDeSignoRNeg++;
+		}
 		
-		System.out.println("Positivas: "+maxRaicesPositivas+" Negativas: "+maxRaicesNegativas);
+		System.out.println("Positivas: "+NumCambiosDeSignoRPos+" Negativas: "+NumCambiosDeSignoRNeg);
 		
 		//Ahora vamos a calcular las cotas con el Método de MacLaurin -> (1/(1+μ) < |ζi| < (1+λ) donde {ζ1,...,ζn} C Complejos las raices n raices. 
-		//Primero calculamos μ, con μ = máximo de {|ak/an|} donde 1<=k<=n y a es el coeficiente de x.
-		float mu=(this.polinomio.get(0)/this.polinomio.get(this.polinomio.size()-1));
-		for(int i=0;i<this.polinomio.size();++i) {
-			if(mu<this.polinomio.get(i)/this.polinomio.get(this.polinomio.size()-1))
-				mu=this.polinomio.get(i)/this.polinomio.get(this.polinomio.size()-1);
+		//Primero calculamos μ, con μ = máximo de {|ak/a0|} donde 1<=k<=n y a es el coeficiente de x.
+		double mu;
+		double cotaMinima;
+		if(this.polinomio.size()==1) {
+			mu=0;
+			cotaMinima=0;
+		}else {
+			mu=(this.polinomio.get(1)/this.polinomio.get(0));
+			for(int i=1;i<this.polinomio.size();++i) {
+				if(mu<Math.abs(this.polinomio.get(i)/this.polinomio.get(0)))
+					mu=Math.abs(this.polinomio.get(i)/this.polinomio.get(0));
+			}
+			cotaMinima = 1/(1+mu);
 		}
-		
-		float cotaMinima = 1/(1+mu);
 		System.out.println("Cota Minima: ±"+cotaMinima);
-		//Ahora calculamos λ, con λ = máximo de {|ak/a0|} donde 1<=k<=n y a es el coeficiente de x.
-		float lambda=1;
-		for(int i=0;i<this.polinomio.size();++i) {
-			if(lambda<this.polinomio.get(i)/this.polinomio.get(0))
-				lambda=this.polinomio.get(i)/this.polinomio.get(0);
+		//Ahora calculamos λ, con λ = máximo de {|ak/an|} donde 0<=k<=n-1 y a es el coeficiente de x.
+		Double lambda=Math.abs((this.polinomio.get(0)/this.polinomio.get(this.polinomio.size()-1)));
+		for(int i=0;i<this.polinomio.size()-1;++i) {
+			if(lambda<Math.abs(this.polinomio.get(i)/this.polinomio.get(this.polinomio.size()-1)))
+				lambda=Math.abs(this.polinomio.get(i)/this.polinomio.get(this.polinomio.size()-1));
 		}
-		float cotaMaxima = 1+lambda;
+		Double cotaMaxima = 1+lambda;
 		System.out.println("Cota Máxima: ±"+cotaMaxima);
 		
 		//Usando la regla de Horner calculamos las posibles raices enteras, este paso es totalmente opcional, es solo puramente lúdico.
-		ArrayList<Float> PosiblesRaicesEnteras = new ArrayList();
-		Float a0 = this.polinomio.get(0);
+		ArrayList<Double> PosiblesRaicesEnteras = new ArrayList();
+		Double a0 = this.polinomio.get(0);
 		for(int i=1;i<=a0;i++) {
 			if(a0%i==0) {
-				PosiblesRaicesEnteras.add((float)i);
-				PosiblesRaicesEnteras.add((float)-i);
+				PosiblesRaicesEnteras.add((double)i);
+				PosiblesRaicesEnteras.add((double)-i);
 			}
 		}
 		
@@ -83,11 +88,11 @@ public class CalcularRaices extends Thread{
 		//aplicamos sturm:
 		
 		//Primero calculamos la derivada:
-		ArrayList<Float> p1 = this.Derivar(this.polinomio);
+		ArrayList<Double> p1 = this.Derivar(this.polinomio);
 		System.out.println(p1.toString());
 		
 		//Calculamos la secuencia:
-		ArrayList<ArrayList<Float>> listaDePolinomios = new ArrayList();
+		ArrayList<ArrayList<Double>> listaDePolinomios = new ArrayList();
 		listaDePolinomios.add(this.polinomio);
 		listaDePolinomios.add(p1);
 		boolean RaicesSimples = SecuenciaSturm(p1,this.polinomio,listaDePolinomios,this.polinomio.size()-1,2);
@@ -98,59 +103,48 @@ public class CalcularRaices extends Thread{
 		
 		//Teniendo la secuencia de sturm aplicamos el teorema sirviendonos del metodo de la bisección hasta encontrar 1 solo cambio de signo:
 		System.out.println("Nº cambios de signo en la cota superior negativa: "+TeoremaSturm(listaDePolinomios,cotaMaxima*-1));
-		System.out.println("Nº cambios de signo en cero: "+TeoremaSturm(listaDePolinomios,(float)0));
+		System.out.println("Nº cambios de signo en cero: "+TeoremaSturm(listaDePolinomios,(double)0));
 		System.out.println("Nº cambios de signo en la cota superior positiva: "+TeoremaSturm(listaDePolinomios,cotaMaxima));
 
-		//if(!RaicesSimples&&(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,(float)0))==this.polinomio.size()-1) {
-			try{
-				ExecutorService pool = Executors.newCachedThreadPool();
-				CyclicBarrier barrera = new CyclicBarrier(2);
-				CalcularRaiz a;
-				if(cotaMaxima == Float.POSITIVE_INFINITY || cotaMaxima == Float.NEGATIVE_INFINITY)
-					a = new CalcularRaiz(this.polinomio,(0)/2,(float)Math.pow(10, -10),barrera);
-				else
-					a = new CalcularRaiz(this.polinomio,(cotaMaxima*-1+0)/2,(float)Math.pow(10, -10),barrera);
-				pool.execute(a);
-				barrera.await();
-				System.out.println("Resultado: "+a.getResultado());
-			}catch(BrokenBarrierException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		//}
+		try{
+			ExecutorService pool = Executors.newFixedThreadPool(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima)));
+			CyclicBarrier barrera = new CyclicBarrier(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))+1);
+			LocalizarRaices(pool,listaDePolinomios,cotaMaxima*-1,cotaMaxima,barrera);
+			barrera.await();
+		}catch(BrokenBarrierException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		
 		
 	}
 	
-	public static ArrayList<Float> Derivar(ArrayList<Float> polinomio){
-		ArrayList<Float> derivada = new ArrayList();
+	public static ArrayList<Double> Derivar(ArrayList<Double> polinomio){
+		ArrayList<Double> derivada = new ArrayList();
 		for(int i=1; i<polinomio.size();i++) {
 			derivada.add(polinomio.get(i)*i);
 		}
 		return derivada;
 	}
 	
-	public boolean SecuenciaSturm(ArrayList<Float> imenos2,ArrayList<Float> imenos1, ArrayList<ArrayList<Float>> listaDePolinomios, int grado, int numPaso){
+	public boolean SecuenciaSturm(ArrayList<Double> imenos2,ArrayList<Double> imenos1, ArrayList<ArrayList<Double>> listaDePolinomios, int grado, int numPaso){
 		if(numPaso<=grado) {
-			float ultimoCoefi1 = imenos1.get(imenos1.size()-1);
+			Double ultimoCoefi1 = imenos1.get(imenos1.size()-1);
 			int gradoDeCoefi1 = imenos1.size()-1;
-			float ultimoCoefi2 = imenos2.get(imenos2.size()-1);
+			Double ultimoCoefi2 = imenos2.get(imenos2.size()-1);
 			int gradoDeCoefi2 = imenos2.size()-1;
-			ArrayList<Float> aux = new ArrayList();
-			ArrayList<Float> copia = (ArrayList<Float>)imenos1.clone();
+			ArrayList<Double> aux = new ArrayList();
+			ArrayList<Double> copia = (ArrayList<Double>)imenos1.clone();
 			while(gradoDeCoefi2<=gradoDeCoefi1) {
-				float coeficoci = ultimoCoefi1/ultimoCoefi2;
+				Double coeficoci = ultimoCoefi1/ultimoCoefi2;
 				int gradococi = gradoDeCoefi1-gradoDeCoefi2;
 				for(int i=0;i<gradoDeCoefi1;i++) {
 					aux.add(i, null);
 				}
 				for(int i=0;i<=gradoDeCoefi2-1;i++) {
-					float resta = imenos2.get(i)*coeficoci;
+					Double resta = imenos2.get(i)*coeficoci;
 					aux.set(i+gradococi,copia.get(i+gradococi)-resta);
 				}
 				for(int i=0;i<gradoDeCoefi1;i++) {
@@ -158,7 +152,7 @@ public class CalcularRaices extends Thread{
 						aux.set(i, copia.get(i));
 					}
 				}
-				copia = (ArrayList<Float>)aux.clone();
+				copia = (ArrayList<Double>)aux.clone();
 				aux.clear();
 				gradoDeCoefi1 = copia.size()-1;
 				ultimoCoefi1 = copia.get(copia.size()-1);
@@ -185,10 +179,10 @@ public class CalcularRaices extends Thread{
 		}
 	}
 	
-	public int TeoremaSturm(ArrayList<ArrayList<Float>> listaDePolinomios,float x) {
+	public int TeoremaSturm(ArrayList<ArrayList<Double>> listaDePolinomios,Double x) {
 		ArrayList<String> signos = new ArrayList();
 		for(int i=0;i<listaDePolinomios.size();i++) {
-			float total=0;
+			double total=0;
 			for(int j=0;j<listaDePolinomios.get(i).size();j++) {
 				total += listaDePolinomios.get(i).get(j)*Math.pow(x, j);
 			}
@@ -205,6 +199,31 @@ public class CalcularRaices extends Thread{
 			}
 		}
 		return cambios;
+	}
+	
+	public void LocalizarRaices(ExecutorService pool,ArrayList<ArrayList<Double>> listaDePolinomios,Double cotaMaximaIz,Double cotaMaximaDer, CyclicBarrier barrera) {
+		CalcularRaiz a;
+		CalcularRaiz b;
+		if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1) {
+			a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+cotaMaximaDer)/2,(Double)Math.pow(10, -10),barrera);
+			pool.execute(a);
+		}else {
+			Double c = (cotaMaximaDer+cotaMaximaIz)/2;			
+			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))==1){
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),barrera);
+				pool.execute(a);
+			}
+			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1){
+				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),barrera);
+				pool.execute(b);
+			}
+			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))>1){				
+				LocalizarRaices(pool,listaDePolinomios,cotaMaximaIz,c,barrera);
+			}
+			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))>1) {
+				LocalizarRaices(pool,listaDePolinomios,c,cotaMaximaDer,barrera);
+			}			
+		}
 	}
 
 }

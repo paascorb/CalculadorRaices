@@ -18,22 +18,33 @@ import java.util.concurrent.Executors;
 					try {
 						Socket s = server.accept();
 						DataInputStream in = new DataInputStream(s.getInputStream());
-						ArrayList<Float> polinomio = new ArrayList();
-//						polinomio.add((float)5);
-//						polinomio.add((float)3);
-//						polinomio.add((float)-2);
-//						polinomio.add((float)0);
-//						polinomio.add((float)6);
-//						polinomio.add((float)5);
-//						polinomio.add((float)9);
-//						polinomio.add((float)-12);
+						ArrayList<Double> polinomio = new ArrayList();
+//						polinomio.add((double)5);
+//						polinomio.add((double)3);
+//						polinomio.add((double)-2);
+//						polinomio.add((double)0);
+//						polinomio.add((double)6);
+//						polinomio.add((double)5);
+//						polinomio.add((double)9);
+//						polinomio.add((double)-12);
 //					
-//						polinomio.add((float)1);
-//						polinomio.add((float)2);
-//						polinomio.add((float)1);
-						polinomio.add((float)0);
-						polinomio.add((float)0);
-						polinomio.add((float)1);
+//						polinomio.add((double)1);
+//						polinomio.add((double)2);
+//						polinomio.add((double)1);
+//						polinomio.add((double)0);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+						
+//						polinomio.add((double)-6);
+//						polinomio.add((double)4);
+//						polinomio.add((double)2);
+						
+						polinomio.add((double)0);
+						polinomio.add((double)2);
+						polinomio.add((double)0);
+						polinomio.add((double)-4);
+						polinomio.add((double)0);
+						polinomio.add((double)1);
 						CalcularRaices a = new CalcularRaices(s,polinomio);
 						pool.execute(a);
 					}catch(IOException e) {

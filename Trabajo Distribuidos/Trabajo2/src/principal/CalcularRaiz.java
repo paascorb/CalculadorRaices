@@ -6,13 +6,13 @@ import java.util.concurrent.CyclicBarrier;
 
 public class CalcularRaiz extends Thread{
 	
-	private ArrayList<Float> polinomio;
-	private float puntoInicio;
-	private float error;
-	private float resultado;
+	private ArrayList<Double> polinomio;
+	private double puntoInicio;
+	private double error;
+	private double resultado;
 	private CyclicBarrier cb;
 	
-	public CalcularRaiz(ArrayList<Float> pol, float puntoInicio,float error,CyclicBarrier cb) {
+	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb) {
 		this.polinomio=pol;
 		this.puntoInicio=puntoInicio;
 		this.error=error;
@@ -23,9 +23,9 @@ public class CalcularRaiz extends Thread{
 	public void run() {
 	
 		//Aplicaremos el metodo iterativo de Newton-Raphson para calcular la raiz en cuestion:
-		float aproximacionAnterior=this.puntoInicio;
-		ArrayList<Float> derivada = CalcularRaices.Derivar(this.polinomio);
-		float aproximacion = evaluacion(polinomio,this.puntoInicio)/evaluacion(derivada,this.puntoInicio);
+		double aproximacionAnterior=this.puntoInicio;
+		ArrayList<Double> derivada = CalcularRaices.Derivar(this.polinomio);
+		double aproximacion = this.puntoInicio-evaluacion(polinomio,this.puntoInicio)/evaluacion(derivada,this.puntoInicio);
 		while(Math.abs(aproximacion-aproximacionAnterior)>error) {
 			aproximacionAnterior=aproximacion;
 			aproximacion = aproximacion - (evaluacion(polinomio,aproximacion)/evaluacion(derivada,aproximacion));
@@ -33,6 +33,7 @@ public class CalcularRaiz extends Thread{
 		try {
 			cb.await();
 			this.resultado=aproximacionAnterior;
+			System.out.println("Resultado: "+this.resultado);
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}catch(BrokenBarrierException e) {
@@ -40,15 +41,15 @@ public class CalcularRaiz extends Thread{
 		} 	
 	}
 	
-	public float evaluacion(ArrayList<Float> polinomio, float x) {
-		float resultado=0;
+	public double evaluacion(ArrayList<Double> polinomio, double x) {
+		double resultado=0;
 		for(int i=0;i<polinomio.size();i++) {
 			resultado+=polinomio.get(i)*Math.pow(x, i);
 		}
 		return resultado;
 	}
 	
-	public float getResultado() {
+	public double getResultado() {
 		return this.resultado;
 	}
 
