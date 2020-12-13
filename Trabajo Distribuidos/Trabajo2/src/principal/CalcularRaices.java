@@ -1,5 +1,7 @@
 package principal;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
@@ -107,13 +109,29 @@ public class CalcularRaices extends Thread{
 		System.out.println("Nº cambios de signo en la cota superior positiva: "+TeoremaSturm(listaDePolinomios,cotaMaxima));
 
 		try{
-			ExecutorService pool = Executors.newFixedThreadPool(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima)));
-			CyclicBarrier barrera = new CyclicBarrier(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))+1);
-			LocalizarRaices(pool,listaDePolinomios,cotaMaxima*-1,cotaMaxima,barrera);
-			barrera.await();
+			DataOutputStream out = new DataOutputStream(s.getOutputStream());
+			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))==0) {
+				out.writeBytes("No existen raices reales");
+				out.flush();
+			}else {
+				int numeroRaices = Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima));
+				if(numeroRaices == 1) {
+					out.writeBytes("Hay "+numeroRaices+" raiz real, que es: "+"\r\n");
+				}else {
+					out.writeBytes("Hay "+numeroRaices+" raíces reales distintas, que son: "+"\r\n");
+				}
+				out.flush();
+				ExecutorService pool = Executors.newFixedThreadPool(numeroRaices);
+				CyclicBarrier barrera = new CyclicBarrier(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))+1);
+				LocalizarRaices(pool,listaDePolinomios,cotaMaxima*-1,cotaMaxima,barrera,this.s);
+				barrera.await();
+				out.close();
+			}
 		}catch(BrokenBarrierException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -151,6 +169,11 @@ public class CalcularRaices extends Thread{
 					if(aux.get(i)==null) {
 						aux.set(i, copia.get(i));
 					}
+				}
+				int cont = aux.size()-1;
+				while(aux.get(cont)==0) {
+					aux.remove(cont);
+					cont--;
 				}
 				copia = (ArrayList<Double>)aux.clone();
 				aux.clear();
@@ -201,27 +224,27 @@ public class CalcularRaices extends Thread{
 		return cambios;
 	}
 	
-	public void LocalizarRaices(ExecutorService pool,ArrayList<ArrayList<Double>> listaDePolinomios,Double cotaMaximaIz,Double cotaMaximaDer, CyclicBarrier barrera) {
+	public void LocalizarRaices(ExecutorService pool,ArrayList<ArrayList<Double>> listaDePolinomios,Double cotaMaximaIz,Double cotaMaximaDer, CyclicBarrier barrera,Socket s) {
 		CalcularRaiz a;
 		CalcularRaiz b;
 		if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1) {
-			a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+cotaMaximaDer)/2,(Double)Math.pow(10, -10),barrera);
+			a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+cotaMaximaDer)/2,(Double)Math.pow(10, -10),barrera,s);
 			pool.execute(a);
 		}else {
 			Double c = (cotaMaximaDer+cotaMaximaIz)/2;			
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))==1){
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),barrera);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),barrera,s);
 				pool.execute(a);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1){
-				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),barrera);
+				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),barrera,s);
 				pool.execute(b);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))>1){				
-				LocalizarRaices(pool,listaDePolinomios,cotaMaximaIz,c,barrera);
+				LocalizarRaices(pool,listaDePolinomios,cotaMaximaIz,c,barrera,s);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))>1) {
-				LocalizarRaices(pool,listaDePolinomios,c,cotaMaximaDer,barrera);
+				LocalizarRaices(pool,listaDePolinomios,c,cotaMaximaDer,barrera,s);
 			}			
 		}
 	}

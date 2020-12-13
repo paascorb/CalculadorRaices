@@ -1,6 +1,8 @@
 package principal;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -37,13 +39,20 @@ public class ClienteConsola {
 		polinomio = construirPolinomio(polinomioStr);
 		
 		//OLE OLE, YA ESTÁ CONSTRUIDO
-		
-		for(Double coef : polinomio) {
-			System.out.println(coef + "");
-		}
+		//5x^4+x+1
+		System.out.println(polinomio.toString());
 		
 		try {
 			Socket cliente = new Socket("localhost",48500);
+			ObjectOutputStream out = new ObjectOutputStream(cliente.getOutputStream());
+			out.writeObject(polinomio);
+			out.flush();
+			DataInputStream in = new DataInputStream(cliente.getInputStream());
+			String cadena = in.readLine();
+			while(cadena!=null) {
+				System.out.println(cadena);
+				cadena = in.readLine();
+			}
 			
 		}catch(IOException e) {
 			e.printStackTrace();

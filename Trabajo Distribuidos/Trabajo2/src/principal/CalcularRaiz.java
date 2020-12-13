@@ -1,5 +1,8 @@
 package principal;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -11,12 +14,14 @@ public class CalcularRaiz extends Thread{
 	private double error;
 	private double resultado;
 	private CyclicBarrier cb;
+	private Socket s;
 	
-	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb) {
+	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb,Socket s) {
 		this.polinomio=pol;
 		this.puntoInicio=puntoInicio;
 		this.error=error;
 		this.cb=cb;
+		this.s = s;
 	}
 	
 	
@@ -31,14 +36,19 @@ public class CalcularRaiz extends Thread{
 			aproximacion = aproximacion - (evaluacion(polinomio,aproximacion)/evaluacion(derivada,aproximacion));
 		}
 		try {
+			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			cb.await();
 			this.resultado=aproximacionAnterior;
-			System.out.println("Resultado: "+this.resultado);
+			out.writeBytes(String.valueOf(resultado)+"\r");
+			out.flush();
+			
 		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}catch(BrokenBarrierException e) {
 			e.printStackTrace();
-		} 	
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public double evaluacion(ArrayList<Double> polinomio, double x) {

@@ -1,7 +1,7 @@
 package principal;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,8 +17,10 @@ import java.util.concurrent.Executors;
 				while(true) {
 					try {
 						Socket s = server.accept();
-						DataInputStream in = new DataInputStream(s.getInputStream());
-						ArrayList<Double> polinomio = new ArrayList();
+						ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+						ArrayList<Double> polinomio = (ArrayList<Double>)in.readObject();
+//						ArrayList<Double> polinomio = new ArrayList();
+						//Pruebas iniciales de polinomios creados por el servidor.
 //						polinomio.add((double)5);
 //						polinomio.add((double)3);
 //						polinomio.add((double)-2);
@@ -38,22 +40,35 @@ import java.util.concurrent.Executors;
 //						polinomio.add((double)-6);
 //						polinomio.add((double)4);
 //						polinomio.add((double)2);
+//						
+//						polinomio.add((double)0);
+//						polinomio.add((double)2);
+//						polinomio.add((double)0);
+//						polinomio.add((double)-4);
+//						polinomio.add((double)0);
+//						polinomio.add((double)-1);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
 						
-						polinomio.add((double)0);
-						polinomio.add((double)2);
-						polinomio.add((double)0);
-						polinomio.add((double)-4);
-						polinomio.add((double)0);
-						polinomio.add((double)1);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+//						polinomio.add((double)0);
+//						polinomio.add((double)4);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+//						
 						CalcularRaices a = new CalcularRaices(s,polinomio);
 						pool.execute(a);
 					}catch(IOException e) {
 						System.out.println(e);
+					}catch(ClassNotFoundException e) {
+						e.printStackTrace();
 					}
 				}
-			}catch(IOException e) {
-					System.out.println(e);
-				}	
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 		}
-
-	}
+}
