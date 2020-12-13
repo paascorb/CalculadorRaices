@@ -39,7 +39,10 @@ public class CalcularRaiz extends Thread{
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			cb.await();
 			this.resultado=aproximacionAnterior;
-			out.writeBytes(String.valueOf(resultado)+"\r");
+			if(this.resultado<Math.pow(10, -10)) {
+				out.writeBytes(String.valueOf(resultado)+" Aprox: 0"+"\r");
+			}else
+				out.writeBytes(String.valueOf(resultado)+"\r");
 			out.flush();
 			
 		}catch(InterruptedException e) {

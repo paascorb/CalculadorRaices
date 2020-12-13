@@ -171,14 +171,20 @@ public class CalcularRaices extends Thread{
 					}
 				}
 				int cont = aux.size()-1;
-				while(aux.get(cont)==0) {
+				while(cont>=0&&aux.get(cont)==0) {
 					aux.remove(cont);
 					cont--;
 				}
 				copia = (ArrayList<Double>)aux.clone();
 				aux.clear();
 				gradoDeCoefi1 = copia.size()-1;
-				ultimoCoefi1 = copia.get(copia.size()-1);
+				if(aux.size()==0) {
+					gradoDeCoefi1=0;
+				}else
+					ultimoCoefi1 = copia.get(copia.size()-1);
+			}
+			if(copia.size()==0) {
+				return false;
 			}
 			if(copia.size()==1) {
 				if(copia.get(copia.size()-1)==0) {
