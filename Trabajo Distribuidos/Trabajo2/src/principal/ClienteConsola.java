@@ -79,7 +79,6 @@ public class ClienteConsola {
 				if(coefGrado[0].length()!=1 || !coefGrado[0].equals("x"))
 				if(!isValidDouble(coefGrado[0]) && !isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1))) {
 					
-					System.out.println("1");
 					estructuraVálida = false;
 					
 				}
