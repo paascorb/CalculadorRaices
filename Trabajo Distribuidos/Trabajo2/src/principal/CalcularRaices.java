@@ -228,8 +228,13 @@ public class CalcularRaices extends Thread{
 		CalcularRaiz a;
 		CalcularRaiz b;
 		if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1) {
-			a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+cotaMaximaDer)/2,(Double)Math.pow(10, -10),barrera,s);
-			pool.execute(a);
+			if(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,(cotaMaximaDer+cotaMaximaIz)/2)==1) {
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,s);
+				pool.execute(a);
+			}else {
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaDer+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,s);
+				pool.execute(a);
+			}
 		}else {
 			Double c = (cotaMaximaDer+cotaMaximaIz)/2;			
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))==1){
