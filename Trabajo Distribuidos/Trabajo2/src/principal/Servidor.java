@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
 //						polinomio.add((float)1);
 //						polinomio.add((float)2);
 //						polinomio.add((float)1);
-						polinomio.add((float)-4);
+						polinomio.add((float)0);
 						polinomio.add((float)0);
 						polinomio.add((float)1);
 						CalcularRaices a = new CalcularRaices(s,polinomio);

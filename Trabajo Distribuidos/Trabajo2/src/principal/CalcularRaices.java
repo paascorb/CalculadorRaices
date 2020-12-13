@@ -105,7 +105,11 @@ public class CalcularRaices extends Thread{
 			try{
 				ExecutorService pool = Executors.newCachedThreadPool();
 				CyclicBarrier barrera = new CyclicBarrier(2);
-				CalcularRaiz a = new CalcularRaiz(this.polinomio,(cotaMaxima*-1+0)/2,(float)Math.pow(10, -10),barrera);
+				CalcularRaiz a;
+				if(cotaMaxima == Float.POSITIVE_INFINITY || cotaMaxima == Float.NEGATIVE_INFINITY)
+					a = new CalcularRaiz(this.polinomio,(0)/2,(float)Math.pow(10, -10),barrera);
+				else
+					a = new CalcularRaiz(this.polinomio,(cotaMaxima*-1+0)/2,(float)Math.pow(10, -10),barrera);
 				pool.execute(a);
 				barrera.await();
 				System.out.println("Resultado: "+a.getResultado());
