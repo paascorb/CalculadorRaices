@@ -222,7 +222,7 @@ public class ClienteGUI extends JFrame {
 						cadena = in.readLine();
 						derivada = cadena;
 						
-						System.out.println(derivada);
+//						System.out.println(derivada);
 						
 						cadena = in.readLine();
 						descartes = cadena;
@@ -310,16 +310,23 @@ private static boolean comprobarEstructura(String polStr) {
 				if(isValidDouble(coefGrado[0])) {
 					
 					//Caso de un doublecillo normal, monomio de grado 0
+					if(!isValidInt(coefGrado[0].substring(coefGrado[0].length()-1))) {
+						
+						estructuraVálida = false;
+						
+					}else exponentes.add(0);
 					
 				}
 				else if(coefGrado[0].equals("x")) {
 					
 					//Una x solísima, bien bruto esto
+					exponentes.add(1);
 					
 				}
 				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
 					
 					//Es un numerillo del palo ax
+					exponentes.add(1);
 					
 				}
 				else {
