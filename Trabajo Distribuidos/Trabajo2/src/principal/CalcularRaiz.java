@@ -34,6 +34,9 @@ public class CalcularRaiz extends Thread{
 		//Aplicaremos el metodo iterativo de Newton-Raphson para calcular la raiz en cuestion:
 		double aproximacionAnterior=this.puntoInicio;
 		ArrayList<Double> derivada = CalcularRaices.Derivar(this.polinomio);
+		double evaDerivada = evaluacion(derivada,this.puntoInicio);
+		if(evaDerivada==0)
+			this.puntoInicio+=0.1;
 		double aproximacion = this.puntoInicio-evaluacion(polinomio,this.puntoInicio)/evaluacion(derivada,this.puntoInicio);
 		while(Math.abs(aproximacion-aproximacionAnterior)>error) {
 			aproximacionAnterior=aproximacion;
@@ -42,6 +45,7 @@ public class CalcularRaiz extends Thread{
 		try {
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			this.resultado=aproximacionAnterior;
+			System.out.println(this.resultado);
 			sem.acquire();
 			this.Escribir(out);
 			out.flush();
