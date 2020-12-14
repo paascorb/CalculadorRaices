@@ -21,12 +21,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
 
 public class ClienteGUI extends JFrame {
 
 	private JPanel contentPane;
 	private String polinomioStr;
 	ArrayList<Double> polinomio = null;
+	
+	//Info de las raíces:
+	String derivada;
+	String descartes;
+	String cotas;
+	ArrayList<String> sturm;
+	String cambiosSigno;
 
 	/**
 	 * Launch the application.
@@ -48,33 +56,36 @@ public class ClienteGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public ClienteGUI() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ClienteGUI.class.getResource("/Imagenes/iconoRefachero.png")));
+		setIconImage(
+				Toolkit.getDefaultToolkit().getImage(ClienteGUI.class.getResource("/Imagenes/iconoRefachero.png")));
 		setResizable(false);
 		setForeground(Color.LIGHT_GRAY);
 		setFont(new Font("Arial Black", Font.BOLD, 14));
 		setTitle("Calculador de Ra\u00EDces");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 771, 530);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Informaci\u00F3n");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//Esto muestra información sobre aquí los pibes gordos que han desarrollado la aplicación que están full gordos los pibes.
-				
+
+				// Esto muestra informaciÃ³n sobre aquÃ­ los pibes gordos que han desarrollado la
+				// aplicaciÃ³n que estÃ¡n full gordos los pibes.
+
 			}
 		});
 		menuBar.add(mntmNewMenuItem_1);
-		
+
 		JMenuItem mntmNewMenuItem = new JMenuItem("Ayuda");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//Al pulsar esto sale un tremendo tuto de cómo usar la aplicación y las vergas esas. Todo guapo emberdá.
-				
+
+				// Al pulsar esto sale un tremendo tuto de cÃ³mo usar la aplicaciÃ³n y las vergas
+				// esas. Todo guapo emberdÃ¡.
+
 			}
 		});
 		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -84,124 +95,164 @@ public class ClienteGUI extends JFrame {
 		contentPane.setForeground(Color.BLACK);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBounds(35, 30, 419, 106);
 		contentPane.add(panel);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(524, 30, 195, 106);
 		contentPane.add(panel_1);
-		
-		JButton btnInfo = new JButton("Info.");
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//Con esto los atributos que ha recogido los manda a otra pestañita o lo que sea y los muestra súper refacheramente.
-				
-			}
-		});
-		btnInfo.setBounds(603, 420, 116, 22);
-		contentPane.add(btnInfo);
-		
+
 		TextField tfPolinomio = new TextField();
 		tfPolinomio.setBounds(35, 200, 684, 22);
 		contentPane.add(tfPolinomio);
 		
+		JButton btnInfo = new JButton("Info.");
+		btnInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				// Con esto los atributos que ha recogido los manda a otra pestaÃ±ita o lo que
+				// sea y los muestra sÃºper refacheramente.
+				
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							VentanaInfoRaícesExtra frameInfo = new VentanaInfoRaícesExtra(tfPolinomio.getText(), derivada, descartes, cotas,  sturm, cambiosSigno);
+							frameInfo.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+			}
+		});
+		btnInfo.setBounds(603, 420, 116, 22);
+		contentPane.add(btnInfo);
 		TextField tfMensajes = new TextField();
 		tfMensajes.setEnabled(false);
 		tfMensajes.setBounds(35, 228, 536, 22);
 		contentPane.add(tfMensajes);
-		
+
 		List listRaices = new List();
 		listRaices.setEnabled(false);
 		listRaices.setMultipleSelections(true);
 		listRaices.setBounds(35, 312, 536, 130);
 		contentPane.add(listRaices);
-		
+
 		Label label = new Label("Ra\u00EDces:");
 		label.setFont(new Font("Arial Black", Font.BOLD, 17));
 		label.setBounds(35, 277, 116, 22);
 		contentPane.add(label);
-		
+
 		Label label_1 = new Label("Polinomio:");
 		label_1.setFont(new Font("Arial Black", Font.BOLD, 17));
 		label_1.setBounds(35, 164, 116, 22);
 		contentPane.add(label_1);
-		
+
 		Label label_1_1 = new Label("Estructura: ax^m+bx^n+...+cx+d, m>n");
 		label_1_1.setFont(new Font("Arial Black", Font.BOLD, 14));
 		label_1_1.setBounds(448, 164, 271, 22);
 		contentPane.add(label_1_1);
-		
+
 		JButton btnCalcularRacies = new JButton("Calcular ra\u00EDces");
 		btnCalcularRacies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//Con esto recoge lo del text y manda petiçao al servidor, ahí el pibe gordo refachero.
-				//Después recibe las raíces y las pone en la lista. Luego recibe la info adicional y eso, y la guarda en atributos o lo que sea el man.
-				
+
+				// Con esto recoge lo del text y manda petiÃ§ao al servidor, ahÃ­ el pibe gordo
+				// refachero.
+				// DespuÃ©s recibe las raÃ­ces y las pone en la lista. Luego recibe la info
+				// adicional y eso, y la guarda en atributos o lo que sea el man.
+
 				listRaices.removeAll();
-				
+
 				polinomioStr = tfPolinomio.getText();
-				
-				if(!comprobarEstructura(polinomioStr)) {
-					
-					tfMensajes.setText("Estructura del polinomio inválida.");
-					
-				}
-				else {
-					
+
+				if (!comprobarEstructura(polinomioStr)) {
+
+					tfMensajes.setText("Estructura del polinomio invÃ¡lida.");
+
+				} else {
+
 					polinomio = construirPolinomio(polinomioStr);
-					
-					//AHORA MANDAMOS EL MENSAJE AL SERVIDOR, OLE OLE
-					
+
+					// AHORA MANDAMOS EL MENSAJE AL SERVIDOR, OLE OLE
+
 					ObjectOutputStream out = null;
 					DataInputStream in = null;
-					
+
 					try {
-						
-						Socket cliente = new Socket("localhost",48500);
-						
+
+						Socket cliente = new Socket("localhost", 48500);
+
 						out = new ObjectOutputStream(cliente.getOutputStream());
 						out.writeObject(polinomio);
 						out.flush();
-						
+
 						in = new DataInputStream(cliente.getInputStream());
-						String cadena = in.readLine();
+						String cadena;
+
+						//AQUÍ VOY A IR GUARDANDO LA INFO
 						
-						while(cadena!=null) {
+						cadena = in.readLine();
+						derivada = cadena;
+						
+						cadena = in.readLine();
+						descartes = cadena;
+						
+						cadena = in.readLine();
+						cotas = cadena;
+						
+						while (!(cadena = in.readLine()).startsWith("E")) {
 							
-							listRaices.add(cadena);
-							cadena = in.readLine();
+							sturm.add(cadena);
 							
 						}
 						
-					}catch(IOException e) {
+						cadena = in.readLine();
+						cambiosSigno = cadena.substring(2);
+						
+						//TERMINÉ DE GUARDAR LA INFO
+						
+						while (cadena != null) {
+
+							listRaices.add(cadena);
+							cadena = in.readLine();
+
+						}
+
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
-				
+
 			}
 		});
 		btnCalcularRacies.setBounds(577, 228, 142, 22);
 		contentPane.add(btnCalcularRacies);
-		
+
 		Label label_2 = new Label("M\u00E1s info.");
 		label_2.setFont(new Font("Arial Black", Font.BOLD, 17));
 		label_2.setBounds(603, 364, 116, 22);
 		contentPane.add(label_2);
-		
+
 		Label label_3 = new Label("de las ra\u00EDces:");
 		label_3.setFont(new Font("Arial Black", Font.BOLD, 17));
 		label_3.setBounds(603, 392, 116, 22);
 		contentPane.add(label_3);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(35, 263, 684, 8);
+		contentPane.add(separator);
 	}
-	
-	private static boolean comprobarEstructura(String polStr) {
+
+private static boolean comprobarEstructura(String polStr) {
 		
 		boolean estructuraVálida = true;
+		
+		polStr = polStr.replaceAll("-", "+-");
 		
 		String monomios[] = polStr.split("\\+");
 		String monomio;
@@ -216,12 +267,34 @@ public class ClienteGUI extends JFrame {
 			coefGrado = monomio.split("x\\^");
 			
 			if(coefGrado.length == 1) {
-				if(coefGrado[0].length()!=1 || !coefGrado[0].equals("x"))
-				if(!isValidDouble(coefGrado[0]) && !isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1))) {
+				
+				if(isValidDouble(coefGrado[0])) {
+					
+					//Caso de un doublecillo normal, monomio de grado 0
+					
+				}
+				else if(coefGrado[0].equals("x")) {
+					
+					//Una x solísima, bien bruto esto
+					
+				}
+				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
+					
+					//Es un numerillo del palo ax
+					
+				}
+				else {
 					
 					estructuraVálida = false;
 					
 				}
+				
+//				if(coefGrado[0].length()!=1 || !coefGrado[0].equals("x"))
+//				if(!isValidDouble(coefGrado[0]) && (!isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) || !coefGrado[0].substring(coefGrado[0].length()-1).equals("x"))) {
+//					
+//					estructuraVálida = false;
+//					
+//				}
 				
 			}
 			else {
@@ -245,6 +318,8 @@ public class ClienteGUI extends JFrame {
 		
 		ArrayList<Double> polinomio = new ArrayList<Double>();
 		
+		polStr = polStr.replaceAll("-", "+-");
+		
 		String monomios[] = polStr.split("\\+");
 		String monomio;
 		String coefGrado[];
@@ -260,12 +335,46 @@ public class ClienteGUI extends JFrame {
 			
 			if(coefGrado.length == 1) {
 				
-				if(coefGrado[0].equals("x")) coefGrado[0] = "1";
+				if(isValidDouble(coefGrado[0])) {
+					
+					//Caso de un doublecillo normal, monomio de grado 0
+					polinomio.add(Double.parseDouble(coefGrado[0]));
+					gradoActual++;
+					
+				}
+				else if(coefGrado[0].equals("x")) {
+					
+					//Una x solísima, bien bruto esto
+					if(gradoActual == -1) {
+						polinomio.add((double) 0.0);
+						gradoActual++;
+					}
+					
+					polinomio.add(Double.parseDouble("1"));
+					gradoActual++;
+					
+				}
+				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
+					
+					//Es un numerillo del palo ax
+					if(gradoActual == -1) {
+						polinomio.add((double) 0.0);
+						gradoActual++;
+					}
+					
+					coefGrado[0] = coefGrado[0].replaceAll("x", "");
+					polinomio.add(Double.parseDouble(coefGrado[0]));
+					
+					gradoActual++;
+					
+				}
 				
-				coefGrado[0] = coefGrado[0].replaceAll("x", "");
-				
-				polinomio.add(Double.parseDouble(coefGrado[0]));
-				gradoActual++;
+//				if(coefGrado[0].equals("x")) coefGrado[0] = "1";
+//				
+//				coefGrado[0] = coefGrado[0].replaceAll("x", "");
+//				
+//				polinomio.add(Double.parseDouble(coefGrado[0]));
+//				gradoActual++;
 				
 			}
 			else {
@@ -287,26 +396,26 @@ public class ClienteGUI extends JFrame {
 		return polinomio;
 		
 	}
-	
+
 	private static boolean isValidDouble(String s) {
-	    boolean isValid = true;
+		boolean isValid = true;
 
-	    try {
-	        Double.parseDouble(s);
-	    } catch(NumberFormatException nfe) {
-	        isValid = false;
-	    }
+		try {
+			Double.parseDouble(s);
+		} catch (NumberFormatException nfe) {
+			isValid = false;
+		}
 
-	    return isValid;
+		return isValid;
 	}
-	
-	private static boolean isValidInt(String s) {
-	    boolean isValid = true;
 
-	    try {
-	        Integer.parseInt(s);
-	    } catch(NumberFormatException nfe) {
-	        isValid = false;
+	private static boolean isValidInt(String s) {
+		boolean isValid = true;
+
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException nfe) {
+			isValid = false;
 		}
 
 		return isValid;
