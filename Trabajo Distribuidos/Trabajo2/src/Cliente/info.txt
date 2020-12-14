@@ -1,0 +1,6 @@
+Cliente
+
+Se puede acceder al servicio de la aplicación de dos modos diferentes:
+	1. Cliente por consola: Mediante la clase ClienteConsola.
+	2. Cliente por interfaz gráfica de usuario: Mediante la clase ClienteGUI (hace uso de las clases Ayuda, Información y VentanaInfoRaícesExtra).
+La clase principalAuxiliar fue utilizada para comprobar la correcta funcionalidad de la clase VentanaInfoRaícesExtra.

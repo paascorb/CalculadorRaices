@@ -1,4 +1,4 @@
-package principal;
+package Cliente;
 
 import java.awt.Color;
 import java.awt.EventQueue;

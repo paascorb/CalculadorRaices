@@ -1,4 +1,4 @@
-package principal;
+package Cliente;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

@@ -1,4 +1,4 @@
-package principal;
+package Cliente;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
