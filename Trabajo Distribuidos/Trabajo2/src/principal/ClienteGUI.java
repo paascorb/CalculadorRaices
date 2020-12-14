@@ -120,7 +120,7 @@ public class ClienteGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon(ClienteGUI.class.getResource("/Imagenes/Logobien.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(ClienteGUI.class.getResource("/Imagenes/LogobienV2.png")));
 		lblNewLabel_1.setBounds(503, 37, 216, 102);
 		contentPane.add(lblNewLabel_1);
 
@@ -289,6 +289,7 @@ public class ClienteGUI extends JFrame {
 private static boolean comprobarEstructura(String polStr) {
 		
 		boolean estructuraVálida = true;
+		ArrayList<Integer> exponentes = new ArrayList();
 		
 		polStr = polStr.replaceAll("-", "+-");
 		
@@ -342,6 +343,23 @@ private static boolean comprobarEstructura(String polStr) {
 				
 				if(!isValidDouble(coefGrado[0]) || !isValidInt(coefGrado[1])) {
 					
+					estructuraVálida = false;
+				}
+				else {
+					
+					exponentes.add(Integer.parseInt(coefGrado[1]));
+					
+				}
+				
+			}
+			
+		}
+		
+		if(estructuraVálida) {
+			
+			for(int i = 1; i < exponentes.size(); i++) {
+				
+				if(exponentes.get(i) < exponentes.get(i-1)) {
 					estructuraVálida = false;
 				}
 				
