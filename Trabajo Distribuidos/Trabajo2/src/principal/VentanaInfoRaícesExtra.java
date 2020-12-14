@@ -144,7 +144,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		contentPane.add(tfDescartesNegativas);
 		tfDescartesNegativas.setText(descartes.split(" ")[1]);
 		
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Coeficientes de la secuencia de Sturm:");
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("Polinomios de la secuencia de Sturm:");
 		lblNewLabel_1_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
 		lblNewLabel_1_1_1_1.setBounds(38, 211, 343, 22);
 		contentPane.add(lblNewLabel_1_1_1_1);
