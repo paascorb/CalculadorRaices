@@ -11,7 +11,7 @@ public class principalAuxiliar {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaInfoRaícesExtra frameInfo = new VentanaInfoRaícesExtra("polinomio", "derivada", "1 4", "2 5",  "[[1, 2, 3], [4, 5], [6]]", "1 2 3");
+					VentanaInfoRaícesExtra frameInfo = new VentanaInfoRaícesExtra("polinomio", "derivada", "1 4", "2 5",  "[[1, 2, 3], [4, 5], [6]]", "1 2 3","5");
 					frameInfo.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

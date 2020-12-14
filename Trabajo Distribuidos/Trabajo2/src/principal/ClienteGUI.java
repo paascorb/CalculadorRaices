@@ -22,6 +22,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class ClienteGUI extends JFrame {
 
@@ -35,6 +37,7 @@ public class ClienteGUI extends JFrame {
 	String cotas;
 	String sturm;
 	String cambiosSigno;
+	String numeroRaices;
 
 	/**
 	 * Launch the application.
@@ -95,20 +98,18 @@ public class ClienteGUI extends JFrame {
 		contentPane.setForeground(Color.BLACK);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		JPanel panel = new JPanel();
-		panel.setBounds(35, 30, 419, 106);
-		contentPane.add(panel);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(524, 30, 195, 106);
-		contentPane.add(panel_1);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setIcon(new ImageIcon(ClienteGUI.class.getResource("/Imagenes/Logobien.png")));
+		lblNewLabel_1.setBounds(503, 37, 216, 102);
+		contentPane.add(lblNewLabel_1);
 
 		TextField tfPolinomio = new TextField();
 		tfPolinomio.setBounds(35, 200, 684, 22);
 		contentPane.add(tfPolinomio);
 		
 		JButton btnInfo = new JButton("Info.");
+		btnInfo.setEnabled(false);
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -118,7 +119,7 @@ public class ClienteGUI extends JFrame {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							VentanaInfoRaícesExtra frameInfo = new VentanaInfoRaícesExtra(tfPolinomio.getText(), derivada, descartes, cotas,  sturm, cambiosSigno);
+							VentanaInfoRaícesExtra frameInfo = new VentanaInfoRaícesExtra(tfPolinomio.getText(), derivada, descartes, cotas,  sturm, cambiosSigno, numeroRaices);
 							frameInfo.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -131,7 +132,8 @@ public class ClienteGUI extends JFrame {
 		btnInfo.setBounds(603, 420, 116, 22);
 		contentPane.add(btnInfo);
 		TextField tfMensajes = new TextField();
-		tfMensajes.setEnabled(false);
+		tfMensajes.setEditable(false);
+		tfMensajes.setForeground(Color.RED);
 		tfMensajes.setBounds(35, 228, 536, 22);
 		contentPane.add(tfMensajes);
 
@@ -164,6 +166,7 @@ public class ClienteGUI extends JFrame {
 				// refachero.
 				// DespuÃ©s recibe las raÃ­ces y las pone en la lista. Luego recibe la info
 				// adicional y eso, y la guarda en atributos o lo que sea el man.
+				//Si no está activado el botoncito ese lo activa
 
 				listRaices.removeAll();
 
@@ -210,15 +213,24 @@ public class ClienteGUI extends JFrame {
 						sturm = cadena;
 						
 						cadena = in.readLine();
-						cambiosSigno = cadena.substring(2);
+						cambiosSigno = cadena;
 						
-						//TERMINÉ DE GUARDAR LA INFO
+						cadena = in.readLine();
+						numeroRaices = cadena;
 						
-						while (cadena != null) {
+						if(isValidInt(numeroRaices)) {
+							btnInfo.setEnabled(true);
+							
+							while ((cadena = in.readLine()) != null) {
+								
+								listRaices.add(cadena);
+								cadena = in.readLine();
 
-							listRaices.add(cadena);
-							cadena = in.readLine();
-
+							}
+						}
+						else {
+							btnInfo.setEnabled(false);
+							tfMensajes.setText(numeroRaices);
 						}
 
 					} catch (IOException e) {
@@ -245,6 +257,11 @@ public class ClienteGUI extends JFrame {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(35, 263, 684, 8);
 		contentPane.add(separator);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(ClienteGUI.class.getResource("/Imagenes/Bannerv2.png")));
+		lblNewLabel.setBounds(35, 31, 405, 115);
+		contentPane.add(lblNewLabel);
 	}
 
 private static boolean comprobarEstructura(String polStr) {

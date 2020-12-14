@@ -115,18 +115,19 @@ public class CalcularRaices extends Thread{
 			out.writeBytes(NumCambiosDeSignoRPos+" "+NumCambiosDeSignoRNeg+"\r\n");
 			out.writeBytes("±"+cotaMinima+" ±"+cotaMaxima+"\r\n");
 			out.writeBytes(listaDePolinomios.toString()+"\r\n");
-			out.writeBytes("E "+TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima)+"\r\n");
+			out.writeBytes(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima)+"\r\n");
 			out.flush();
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))==0) {
-				out.writeBytes("\r\n"+"No existen raices reales");
+				out.writeBytes("No existen raices reales"+"\r\n");
 				out.flush();
 			}else {
 				int numeroRaices = Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima));
 				if(numeroRaices == 1) {
-					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raiz real, que es: "+"\r\n");
+//					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raiz real, que es: "+"\r\n");
 				}else {
-					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raíces reales distintas, que son: "+"\r\n");
+//					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raíces reales distintas, que son: "+"\r\n");
 				}
+				out.writeBytes(numeroRaices+"\r\n");
 				out.flush();
 				ExecutorService pool = Executors.newFixedThreadPool(numeroRaices);
 				//CyclicBarrier barrera = new CyclicBarrier(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))+1);

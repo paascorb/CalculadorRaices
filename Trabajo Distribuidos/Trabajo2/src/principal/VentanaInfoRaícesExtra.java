@@ -30,6 +30,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 	private JTextField tfCambiosNegativa;
 	private JTextField tfCambiosCero;
 	private JTextField tfCambiosPositiva;
+	private JTextField tfNumRaices;
 
 	/**
 	 * Launch the application.
@@ -50,10 +51,9 @@ public class VentanaInfoRaícesExtra extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaInfoRaícesExtra(String polinomio, String derivada, String descartes, String cotas, String sturm, String cambiosSigno) {
+	public VentanaInfoRaícesExtra(String polinomio, String derivada, String descartes, String cotas, String sturm, String cambiosSigno, String numeroRaices) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaInfoRaícesExtra.class.getResource("/Imagenes/iconoRefachero.png")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 684, 573);
+		setBounds(100, 100, 684, 669);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setForeground(Color.BLACK);
@@ -63,7 +63,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Descartes (num. m\u00E1x.):");
 		lblNewLabel.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel.setBounds(38, 92, 197, 22);
+		lblNewLabel.setBounds(38, 126, 197, 22);
 		contentPane.add(lblNewLabel);
 		
 		tfPolinomio = new JTextField();
@@ -80,17 +80,17 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		
 		JLabel lblPositivas = new JLabel("Positivas:");
 		lblPositivas.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblPositivas.setBounds(258, 95, 87, 22);
+		lblPositivas.setBounds(258, 129, 87, 22);
 		contentPane.add(lblPositivas);
 		
 		JLabel lblNegativas = new JLabel("Negativas:");
 		lblNegativas.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNegativas.setBounds(452, 95, 93, 22);
+		lblNegativas.setBounds(452, 129, 93, 22);
 		contentPane.add(lblNegativas);
 		
 		tfDescartesPositivas = new JTextField();
 		tfDescartesPositivas.setEditable(false);
-		tfDescartesPositivas.setBounds(355, 98, 76, 20);
+		tfDescartesPositivas.setBounds(355, 132, 76, 20);
 		contentPane.add(tfDescartesPositivas);
 		tfDescartesPositivas.setColumns(10);
 		tfDescartesPositivas.setText(descartes.split(" ")[0]);
@@ -109,47 +109,47 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Cotas:");
 		lblNewLabel_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1.setBounds(38, 125, 119, 22);
+		lblNewLabel_1_1_1.setBounds(38, 159, 119, 22);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		JLabel lblMnima = new JLabel("M\u00EDnima:");
 		lblMnima.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblMnima.setBounds(258, 127, 87, 22);
+		lblMnima.setBounds(258, 161, 87, 22);
 		contentPane.add(lblMnima);
 		
 		JLabel lblMxima = new JLabel("M\u00E1xima:");
 		lblMxima.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblMxima.setBounds(452, 127, 93, 22);
+		lblMxima.setBounds(452, 161, 93, 22);
 		contentPane.add(lblMxima);
 		
 		tfCotasMínima = new JTextField();
 		tfCotasMínima.setEditable(false);
 		tfCotasMínima.setColumns(10);
-		tfCotasMínima.setBounds(355, 131, 76, 20);
+		tfCotasMínima.setBounds(355, 165, 76, 20);
 		contentPane.add(tfCotasMínima);
 		tfCotasMínima.setText(cotas.split(" ")[0]);
 		
 		tfCotasMáxima = new JTextField();
 		tfCotasMáxima.setEditable(false);
 		tfCotasMáxima.setColumns(10);
-		tfCotasMáxima.setBounds(555, 130, 76, 20);
+		tfCotasMáxima.setBounds(555, 164, 76, 20);
 		contentPane.add(tfCotasMáxima);
 		tfCotasMáxima.setText(cotas.split(" ")[1]);
 		
 		tfDescartesNegativas = new JTextField();
 		tfDescartesNegativas.setEditable(false);
 		tfDescartesNegativas.setColumns(10);
-		tfDescartesNegativas.setBounds(555, 97, 76, 20);
+		tfDescartesNegativas.setBounds(555, 131, 76, 20);
 		contentPane.add(tfDescartesNegativas);
 		tfDescartesNegativas.setText(descartes.split(" ")[1]);
 		
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Coeficientes de la secuencia de Sturm:");
 		lblNewLabel_1_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1.setBounds(38, 177, 343, 22);
+		lblNewLabel_1_1_1_1.setBounds(38, 211, 343, 22);
 		contentPane.add(lblNewLabel_1_1_1_1);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(38, 162, 593, 8);
+		separator.setBounds(38, 196, 593, 8);
 		contentPane.add(separator);
 		
 		//Aquí genero los elementos
@@ -163,43 +163,56 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Cambios de signo en la cota superior negativa:");
 		lblNewLabel_1_1_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_1.setBounds(38, 423, 415, 22);
+		lblNewLabel_1_1_1_1_1.setBounds(38, 457, 415, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_1);
 		
 		JLabel lblNewLabel_1_1_1_1_2 = new JLabel("Cambios de signo en cero:");
 		lblNewLabel_1_1_1_1_2.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_2.setBounds(38, 456, 343, 22);
+		lblNewLabel_1_1_1_1_2.setBounds(38, 490, 343, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_2);
 		
 		JLabel lblNewLabel_1_1_1_1_3 = new JLabel("Cambios de signo en la cota superior positiva");
 		lblNewLabel_1_1_1_1_3.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_3.setBounds(38, 489, 393, 22);
+		lblNewLabel_1_1_1_1_3.setBounds(38, 523, 393, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_3);
 		
 		tfCambiosNegativa = new JTextField();
 		tfCambiosNegativa.setEditable(false);
 		tfCambiosNegativa.setColumns(10);
-		tfCambiosNegativa.setBounds(555, 426, 76, 20);
+		tfCambiosNegativa.setBounds(555, 460, 76, 20);
 		contentPane.add(tfCambiosNegativa);
 		tfCambiosNegativa.setText(cambiosSigno.split(" ")[0]);
 		
 		tfCambiosCero = new JTextField();
 		tfCambiosCero.setEditable(false);
 		tfCambiosCero.setColumns(10);
-		tfCambiosCero.setBounds(555, 459, 76, 20);
+		tfCambiosCero.setBounds(555, 493, 76, 20);
 		contentPane.add(tfCambiosCero);
 		tfCambiosCero.setText(cambiosSigno.split(" ")[1]);
 		
 		tfCambiosPositiva = new JTextField();
 		tfCambiosPositiva.setEditable(false);
 		tfCambiosPositiva.setColumns(10);
-		tfCambiosPositiva.setBounds(555, 492, 76, 20);
+		tfCambiosPositiva.setBounds(555, 526, 76, 20);
 		contentPane.add(tfCambiosPositiva);
 		tfCambiosPositiva.setText(cambiosSigno.split(" ")[2]);
 		
 		List list = new List();
-		list.setBounds(38, 205, 593, 212);
+		list.setBounds(38, 239, 593, 212);
 		contentPane.add(list);
+		
+		JLabel lblNewLabel_1_1_2 = new JLabel("N\u00FAmero de ra\u00EDces:");
+		lblNewLabel_1_1_2.setFont(new Font("Arial Black", Font.BOLD, 15));
+		lblNewLabel_1_1_2.setBounds(38, 92, 182, 22);
+		contentPane.add(lblNewLabel_1_1_2);
+		
+		tfNumRaices = new JTextField();
+		tfNumRaices.setText("<dynamic>");
+		tfNumRaices.setEditable(false);
+		tfNumRaices.setColumns(10);
+		tfNumRaices.setBounds(258, 95, 373, 20);
+		contentPane.add(tfNumRaices);
+		tfNumRaices.setText(numeroRaices);
 		
 		//Aquí genero los elementos
 		for(String elemento : procesarSturm(sturm)) {
