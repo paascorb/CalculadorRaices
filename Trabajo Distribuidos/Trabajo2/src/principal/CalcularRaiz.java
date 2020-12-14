@@ -36,7 +36,7 @@ public class CalcularRaiz extends Thread{
 		ArrayList<Double> derivada = CalcularRaices.Derivar(this.polinomio);
 		double evaDerivada = evaluacion(derivada,this.puntoInicio);
 		if(evaDerivada==0)
-			this.puntoInicio+=0.1;
+			this.puntoInicio*=2;
 		double aproximacion = this.puntoInicio-evaluacion(polinomio,this.puntoInicio)/evaluacion(derivada,this.puntoInicio);
 		while(Math.abs(aproximacion-aproximacionAnterior)>error) {
 			aproximacionAnterior=aproximacion;
