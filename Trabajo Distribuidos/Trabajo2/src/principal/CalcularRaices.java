@@ -2,11 +2,10 @@ package principal;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -56,7 +55,7 @@ public class CalcularRaices extends Thread{
 		//Primero calculamos μ, con μ = máximo de {|ak/a0|} donde 1<=k<=n y a es el coeficiente de x.
 		double mu;
 		double cotaMinima;
-		if(this.polinomio.size()==1) {
+		if(this.polinomio.get(0)==0||this.polinomio.size()==1) {
 			mu=0;
 			cotaMinima=0;
 		}else {
@@ -112,15 +111,21 @@ public class CalcularRaices extends Thread{
 
 		try{
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
+			out.writeBytes(p1.toString());
+			out.writeBytes(NumCambiosDeSignoRPos+" "+NumCambiosDeSignoRNeg);
+			out.writeBytes("±"+cotaMinima+" ±"+cotaMaxima);
+			out.writeBytes(listaDePolinomios.toString());
+			out.writeBytes("E "+TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima));
+			out.flush();
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))==0) {
-				out.writeBytes("No existen raices reales");
+				out.writeBytes("\r\n"+"No existen raices reales");
 				out.flush();
 			}else {
 				int numeroRaices = Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima));
 				if(numeroRaices == 1) {
-					out.writeBytes("Hay "+numeroRaices+" raiz real, que es: "+"\r\n");
+					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raiz real, que es: "+"\r\n");
 				}else {
-					out.writeBytes("Hay "+numeroRaices+" raíces reales distintas, que son: "+"\r\n");
+					out.writeBytes("\r\n"+"Hay "+numeroRaices+" raíces reales distintas, que son: "+"\r\n");
 				}
 				out.flush();
 				ExecutorService pool = Executors.newFixedThreadPool(numeroRaices);
