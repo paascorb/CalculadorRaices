@@ -111,11 +111,11 @@ public class CalcularRaices extends Thread{
 
 		try{
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
-			out.writeBytes(p1.toString());
-			out.writeBytes(NumCambiosDeSignoRPos+" "+NumCambiosDeSignoRNeg);
-			out.writeBytes("±"+cotaMinima+" ±"+cotaMaxima);
-			out.writeBytes(listaDePolinomios.toString());
-			out.writeBytes("E "+TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima));
+			out.writeBytes(p1.toString()+"\r\n");
+			out.writeBytes(NumCambiosDeSignoRPos+" "+NumCambiosDeSignoRNeg+"\r\n");
+			out.writeBytes("±"+cotaMinima+" ±"+cotaMaxima+"\r\n");
+			out.writeBytes(listaDePolinomios.toString()+"\r\n");
+			out.writeBytes("E "+TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima)+"\r\n");
 			out.flush();
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))==0) {
 				out.writeBytes("\r\n"+"No existen raices reales");

@@ -50,7 +50,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VentanaInfoRaícesExtra(String polinomio, String derivada, String descartes, String cotas, ArrayList<String> sturm, String cambiosSigno) {
+	public VentanaInfoRaícesExtra(String polinomio, String derivada, String descartes, String cotas, String sturm, String cambiosSigno) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaInfoRaícesExtra.class.getResource("/Imagenes/iconoRefachero.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 684, 573);
@@ -202,10 +202,25 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		contentPane.add(list);
 		
 		//Aquí genero los elementos
-		for(String elemento : sturm) {
+		for(String elemento : procesarSturm(sturm)) {
 			
 			list.add(elemento);
 							
 		}
+	}
+	
+	private static ArrayList<String> procesarSturm(String sturm){
+		
+		ArrayList<String> sturmArr = new ArrayList<String>();
+		
+		String sturmAux = sturm.substring(1,sturm.length()-1).replace(" ", "");
+		String sturmAux2 = sturmAux.replace("]", "]]");
+		String[] sturmVec = sturmAux2.split("],");
+		for(String sturmElem : sturmVec) {
+			sturmArr.add(sturmElem.replace("[", "").replace("]", ""));
+		}
+		
+		return sturmArr;
+		
 	}
 }

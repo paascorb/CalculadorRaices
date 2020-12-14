@@ -33,7 +33,7 @@ public class ClienteGUI extends JFrame {
 	String derivada;
 	String descartes;
 	String cotas;
-	ArrayList<String> sturm;
+	String sturm;
 	String cambiosSigno;
 
 	/**
@@ -198,17 +198,16 @@ public class ClienteGUI extends JFrame {
 						cadena = in.readLine();
 						derivada = cadena;
 						
+						System.out.println(derivada);
+						
 						cadena = in.readLine();
 						descartes = cadena;
 						
 						cadena = in.readLine();
 						cotas = cadena;
 						
-						while (!(cadena = in.readLine()).startsWith("E")) {
-							
-							sturm.add(cadena);
-							
-						}
+						cadena = in.readLine();
+						sturm = cadena;
 						
 						cadena = in.readLine();
 						cambiosSigno = cadena.substring(2);
