@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -123,8 +124,10 @@ public class CalcularRaices extends Thread{
 				out.flush();
 				ExecutorService pool = Executors.newFixedThreadPool(numeroRaices);
 				CyclicBarrier barrera = new CyclicBarrier(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))+1);
-				LocalizarRaices(pool,listaDePolinomios,cotaMaxima*-1,cotaMaxima,barrera,this.s);
+				CountDownLatch count = new CountDownLatch(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima)));
+				LocalizarRaices(pool,listaDePolinomios,cotaMaxima*-1,cotaMaxima,barrera,count,this.s);
 				barrera.await();
+				count.await();
 				out.close();
 			}
 		}catch(BrokenBarrierException e) {
@@ -178,7 +181,7 @@ public class CalcularRaices extends Thread{
 				copia = (ArrayList<Double>)aux.clone();
 				aux.clear();
 				gradoDeCoefi1 = copia.size()-1;
-				if(aux.size()==0) {
+				if(copia.size()==0) {
 					gradoDeCoefi1=0;
 				}else
 					ultimoCoefi1 = copia.get(copia.size()-1);
@@ -230,32 +233,32 @@ public class CalcularRaices extends Thread{
 		return cambios;
 	}
 	
-	public void LocalizarRaices(ExecutorService pool,ArrayList<ArrayList<Double>> listaDePolinomios,Double cotaMaximaIz,Double cotaMaximaDer, CyclicBarrier barrera,Socket s) {
+	public void LocalizarRaices(ExecutorService pool,ArrayList<ArrayList<Double>> listaDePolinomios,Double cotaMaximaIz,Double cotaMaximaDer, CyclicBarrier barrera,CountDownLatch count,Socket s) {
 		CalcularRaiz a;
 		CalcularRaiz b;
 		if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1) {
 			if(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,(cotaMaximaDer+cotaMaximaIz)/2)==1) {
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,count,s);
 				pool.execute(a);
 			}else {
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaDer+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaDer+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),barrera,count,s);
 				pool.execute(a);
 			}
 		}else {
 			Double c = (cotaMaximaDer+cotaMaximaIz)/2;			
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))==1){
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),barrera,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),barrera,count,s);
 				pool.execute(a);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1){
-				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),barrera,s);
+				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),barrera,count,s);
 				pool.execute(b);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))>1){				
-				LocalizarRaices(pool,listaDePolinomios,cotaMaximaIz,c,barrera,s);
+				LocalizarRaices(pool,listaDePolinomios,cotaMaximaIz,c,barrera,count,s);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))>1) {
-				LocalizarRaices(pool,listaDePolinomios,c,cotaMaximaDer,barrera,s);
+				LocalizarRaices(pool,listaDePolinomios,c,cotaMaximaDer,barrera,count,s);
 			}			
 		}
 	}

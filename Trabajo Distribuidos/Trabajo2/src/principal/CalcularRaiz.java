@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 public class CalcularRaiz extends Thread{
@@ -14,14 +15,16 @@ public class CalcularRaiz extends Thread{
 	private double error;
 	private double resultado;
 	private CyclicBarrier cb;
+	private CountDownLatch cl;
 	private Socket s;
 	
-	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb,Socket s) {
+	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb,CountDownLatch cl,Socket s) {
 		this.polinomio=pol;
 		this.puntoInicio=puntoInicio;
 		this.error=error;
 		this.cb=cb;
 		this.s = s;
+		this.cl=cl;
 	}
 	
 	
@@ -37,13 +40,11 @@ public class CalcularRaiz extends Thread{
 		}
 		try {
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
-			cb.await();
 			this.resultado=aproximacionAnterior;
-			if(this.resultado<Math.pow(10, -10)) {
-				out.writeBytes(String.valueOf(resultado)+" Aprox: 0"+"\r");
-			}else
-				out.writeBytes(String.valueOf(resultado)+"\r");
+			cb.await();
+			this.Escribir(out);
 			out.flush();
+			cl.countDown();
 			
 		}catch(InterruptedException e) {
 			e.printStackTrace();
@@ -64,6 +65,17 @@ public class CalcularRaiz extends Thread{
 	
 	public double getResultado() {
 		return this.resultado;
+	}
+	
+	public synchronized void Escribir(DataOutputStream out) {
+		try {
+			if(Math.abs(this.resultado)<Math.pow(10, -9)) {
+				out.writeBytes(String.valueOf(resultado)+" Aprox: 0"+"\r\n");
+			}else
+				out.writeBytes(String.valueOf(resultado)+"\r\n");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
