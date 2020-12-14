@@ -2,8 +2,8 @@ package principal;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -113,7 +113,8 @@ public class CalcularRaices extends Thread{
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			out.writeBytes(p1.toString()+"\r\n");
 			out.writeBytes(NumCambiosDeSignoRPos+" "+NumCambiosDeSignoRNeg+"\r\n");
-			out.writeBytes("±"+cotaMinima+" ±"+cotaMaxima+"\r\n");
+			//Preuba pra formatear bien las cotas: DecimalFormat df = new DecimalFormat("#.000000");
+			out.writeBytes("±"+String.format("%.5f", cotaMinima)+" ±"+String.format("%.5f", cotaMaxima)+"\r\n");
 			out.writeBytes(listaDePolinomios.toString()+"\r\n");
 			out.writeBytes(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima)+"\r\n");
 			out.flush();
