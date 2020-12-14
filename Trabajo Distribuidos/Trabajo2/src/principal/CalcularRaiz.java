@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 public class CalcularRaiz extends Thread{
 	
@@ -14,15 +15,15 @@ public class CalcularRaiz extends Thread{
 	private double puntoInicio;
 	private double error;
 	private double resultado;
-	private CyclicBarrier cb;
+	private Semaphore sem;
 	private CountDownLatch cl;
 	private Socket s;
 	
-	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,CyclicBarrier cb,CountDownLatch cl,Socket s) {
+	public CalcularRaiz(ArrayList<Double> pol, double puntoInicio,double error,Semaphore sem,CountDownLatch cl,Socket s) {
 		this.polinomio=pol;
 		this.puntoInicio=puntoInicio;
 		this.error=error;
-		this.cb=cb;
+		this.sem=sem;
 		this.s = s;
 		this.cl=cl;
 	}
@@ -41,15 +42,16 @@ public class CalcularRaiz extends Thread{
 		try {
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			this.resultado=aproximacionAnterior;
-			cb.await();
+			sem.acquire();
 			this.Escribir(out);
 			out.flush();
+			sem.release();
 			cl.countDown();
 			
 		}catch(InterruptedException e) {
 			e.printStackTrace();
-		}catch(BrokenBarrierException e) {
-			e.printStackTrace();
+//		}catch(BrokenBarrierException e) {
+//			e.printStackTrace();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
