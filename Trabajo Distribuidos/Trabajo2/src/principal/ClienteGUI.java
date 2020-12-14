@@ -75,7 +75,7 @@ public class ClienteGUI extends JFrame {
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				// Esto muestra información sobre aquí los pibes gordos que han desarrollado la
+				// Esto muestra informaci�n sobre aquí los pibes gordos que han desarrollado la
 				// aplicación que están full gordos los pibes.
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
