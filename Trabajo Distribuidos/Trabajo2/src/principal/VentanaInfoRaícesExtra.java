@@ -52,8 +52,9 @@ public class VentanaInfoRaícesExtra extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaInfoRaícesExtra(String polinomio, String derivada, String descartes, String cotas, String sturm, String cambiosSigno, String numeroRaices) {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaInfoRaícesExtra.class.getResource("/Imagenes/iconoRefachero.png")));
-		setBounds(100, 100, 684, 669);
+		setBounds(100, 100, 684, 609);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.LIGHT_GRAY);
 		contentPane.setForeground(Color.BLACK);
@@ -105,7 +106,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		tfDerivada.setColumns(10);
 		tfDerivada.setBounds(258, 59, 373, 20);
 		contentPane.add(tfDerivada);
-		tfDerivada.setText(derivada);
+		tfDerivada.setText(ponerFormatoPolinomio(derivada));
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Cotas:");
 		lblNewLabel_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
@@ -217,7 +218,7 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		//Aquí genero los elementos
 		for(String elemento : procesarSturm(sturm)) {
 			
-			list.add(elemento);
+			list.add(ponerFormatoPolinomio(elemento));
 							
 		}
 	}
@@ -234,6 +235,43 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		}
 		
 		return sturmArr;
+		
+	}
+	
+private static String ponerFormatoPolinomio(String polStr) {
+		
+		String pol = "";
+		
+		String coeficientes[] = polStr.replace("[", "").replace("]", "").replace(" ", "").split(",");
+		
+		for(int i = coeficientes.length-1;i>=0;i--) {
+			
+			if(Double.parseDouble(coeficientes[i]) > 0) {
+				if(i == 0) {
+					pol = pol + " + " + coeficientes[i];
+				}
+				else if(i == 1) {
+					pol = pol + " + " + coeficientes[i] + "x";
+				}
+				else {
+					pol = pol + " + " + coeficientes[i] + "x^" + i;
+				}
+			}
+			else if(Double.parseDouble(coeficientes[i]) < 0){
+				if(i == 0) {
+					pol = pol + " - " + (0-Double.parseDouble(coeficientes[i]));
+				}
+				else if(i == 1) {
+					pol = pol + " - " + (0-Double.parseDouble(coeficientes[i])) + "x";
+				}
+				else {
+					pol = pol + " - " + (0-Double.parseDouble(coeficientes[i])) + "x^" + i;
+				}
+			}
+			
+		}
+		
+		return pol.substring(1);
 		
 	}
 }

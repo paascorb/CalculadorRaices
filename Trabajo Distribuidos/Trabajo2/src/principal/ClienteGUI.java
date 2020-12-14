@@ -77,6 +77,16 @@ public class ClienteGUI extends JFrame {
 
 				// Esto muestra informaci贸n sobre aqu铆 los pibes gordos que han desarrollado la
 				// aplicaci贸n que est谩n full gordos los pibes.
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Informaci髇 frameInfo = new Informaci髇();
+							frameInfo.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 
 			}
 		});
@@ -88,6 +98,16 @@ public class ClienteGUI extends JFrame {
 
 				// Al pulsar esto sale un tremendo tuto de c贸mo usar la aplicaci贸n y las vergas
 				// esas. Todo guapo emberd谩.
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Ayuda frameAyuda = new Ayuda();
+							frameAyuda.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 
 			}
 		});
@@ -174,7 +194,8 @@ public class ClienteGUI extends JFrame {
 
 				if (!comprobarEstructura(polinomioStr)) {
 
-					tfMensajes.setText("Estructura del polinomio inv谩lida.");
+					tfMensajes.setText("Estructura del polinomio inv醠ida.");
+					btnInfo.setEnabled(false);
 
 				} else {
 
@@ -221,10 +242,11 @@ public class ClienteGUI extends JFrame {
 						if(isValidInt(numeroRaices)) {
 							btnInfo.setEnabled(true);
 							
+							tfMensajes.setText("");
+							
 							while ((cadena = in.readLine()) != null) {
 								
 								listRaices.add(cadena);
-								cadena = in.readLine();
 
 							}
 						}
@@ -316,6 +338,7 @@ private static boolean comprobarEstructura(String polStr) {
 			else {
 				
 				if(coefGrado[0].equals("")) coefGrado[0] = "1";
+				if(coefGrado[0].equals("-")) coefGrado[0] = "-1";
 				
 				if(!isValidDouble(coefGrado[0]) || !isValidInt(coefGrado[1])) {
 					
@@ -396,6 +419,7 @@ private static boolean comprobarEstructura(String polStr) {
 			else {
 				
 				if(coefGrado[0].equals("")) coefGrado[0] = "1";
+				if(coefGrado[0].equals("-")) coefGrado[0] = "-1";
 				
 				while(Integer.parseInt(coefGrado[1])-1 > gradoActual) {
 					polinomio.add((double) 0.0);
