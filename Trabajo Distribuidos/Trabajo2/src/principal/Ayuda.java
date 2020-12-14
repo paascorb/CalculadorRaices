@@ -39,7 +39,7 @@ public class Ayuda extends JFrame {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Ayuda.class.getResource("/Imagenes/iconoRefachero.png")));
 		setTitle("Ayuda");
-		setBounds(100, 100, 382, 267);
+		setBounds(100, 100, 382, 333);
 		contentPane = new JPanel();
 		contentPane.setForeground(Color.BLACK);
 		contentPane.setBackground(Color.LIGHT_GRAY);
@@ -72,5 +72,12 @@ public class Ayuda extends JFrame {
 		txtpnParaMsInformacin.setBackground(Color.LIGHT_GRAY);
 		txtpnParaMsInformacin.setBounds(20, 164, 320, 48);
 		contentPane.add(txtpnParaMsInformacin);
+		
+		JTextPane txtpnEnElCaso = new JTextPane();
+		txtpnEnElCaso.setText("En el caso de encontrar dos ra\u00EDces id\u00E9nticas es debido a la convergencia del M\u00E9todo de Newton utilizado en esta aplicaci\u00F3n,hay veces que no logra encontrarlas, pedimos disculpas.");
+		txtpnEnElCaso.setForeground(Color.BLACK);
+		txtpnEnElCaso.setBackground(Color.LIGHT_GRAY);
+		txtpnEnElCaso.setBounds(20, 208, 320, 67);
+		contentPane.add(txtpnEnElCaso);
 	}
 }

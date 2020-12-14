@@ -119,8 +119,13 @@ public class CalcularRaices extends Thread{
 			out.writeBytes(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)+" "+TeoremaSturm(listaDePolinomios,(double)0)+" "+TeoremaSturm(listaDePolinomios,cotaMaxima)+"\r\n");
 			out.flush();
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima))==0) {
-				out.writeBytes("No existen raices reales"+"\r\n");
-				out.flush();
+				if(this.polinomio.size()==1&&this.polinomio.get(0)==0) {
+					out.writeBytes("La recta real son las raíces de la función"+"\r\n");
+					out.flush();
+				}else {
+					out.writeBytes("No existen raices reales"+"\r\n");
+					out.flush();
+				}
 			}else {
 				int numeroRaices = Math.abs(TeoremaSturm(listaDePolinomios,cotaMaxima*-1)-TeoremaSturm(listaDePolinomios,cotaMaxima));
 				if(numeroRaices == 1) {
