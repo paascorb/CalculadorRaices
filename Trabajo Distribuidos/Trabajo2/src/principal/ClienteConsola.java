@@ -18,7 +18,7 @@ public class ClienteConsola {
 		ArrayList<Double> polinomio = null;
 		
 		System.out.println("-------------------------------------------------");
-		System.out.println(".......BIENVENIDO AL CALCULADOR DE RAÍCES........");
+		System.out.println(".......BIENVENIDO AL CALCULADOR DE RAï¿½CES........");
 		System.out.println("-------------------------------------------------");
 		
 		System.out.println("\n");
@@ -29,7 +29,7 @@ public class ClienteConsola {
 		while(!comprobarEstructura(polinomioStr)) {
 			
 			System.out.println("\n");
-			System.out.println("Estructura inválida.");
+			System.out.println("Estructura invï¿½lida.");
 			System.out.println("Introduzca un polinomio (estructura: ax^n+bx^n-1+...+cx+d):");
 			
 			polinomioStr = sc.nextLine();
@@ -38,7 +38,7 @@ public class ClienteConsola {
 		
 		polinomio = construirPolinomio(polinomioStr);
 		
-		//OLE OLE, YA ESTÁ CONSTRUIDO
+		//OLE OLE, YA ESTÃƒï¿½ CONSTRUIDO
 		//5x^4+x+1
 		System.out.println(polinomio.toString());
 		
@@ -61,7 +61,9 @@ public class ClienteConsola {
 	
 	private static boolean comprobarEstructura(String polStr) {
 		
-		boolean estructuraVálida = true;
+		boolean estructuraVÃ¡lida = true;
+		
+		polStr = polStr.replaceAll("-", "+-");
 		
 		String monomios[] = polStr.split("\\+");
 		String monomio;
@@ -76,13 +78,34 @@ public class ClienteConsola {
 			coefGrado = monomio.split("x\\^");
 			
 			if(coefGrado.length == 1) {
-				if(coefGrado[0].length()!=1 || !coefGrado[0].equals("x"))
-				if(!isValidDouble(coefGrado[0]) && !isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1))) {
+				
+				if(isValidDouble(coefGrado[0])) {
 					
-					System.out.println("1");
-					estructuraVálida = false;
+					//Caso de un doublecillo normal, monomio de grado 0
 					
 				}
+				else if(coefGrado[0].equals("x")) {
+					
+					//Una x solÃ­sima, bien bruto esto
+					
+				}
+				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
+					
+					//Es un numerillo del palo ax
+					
+				}
+				else {
+					
+					estructuraVÃ¡lida = false;
+					
+				}
+				
+//				if(coefGrado[0].length()!=1 || !coefGrado[0].equals("x"))
+//				if(!isValidDouble(coefGrado[0]) && (!isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) || !coefGrado[0].substring(coefGrado[0].length()-1).equals("x"))) {
+//					
+//					estructuraVÃ¡lida = false;
+//					
+//				}
 				
 			}
 			else {
@@ -91,20 +114,22 @@ public class ClienteConsola {
 				
 				if(!isValidDouble(coefGrado[0]) || !isValidInt(coefGrado[1])) {
 					
-					estructuraVálida = false;
+					estructuraVÃ¡lida = false;
 				}
 				
 			}
 			
 		}
 		
-		return estructuraVálida;
+		return estructuraVÃ¡lida;
 		
 	}
 	
 	private static ArrayList<Double> construirPolinomio(String polStr) {
 		
 		ArrayList<Double> polinomio = new ArrayList<Double>();
+		
+		polStr = polStr.replaceAll("-", "+-");
 		
 		String monomios[] = polStr.split("\\+");
 		String monomio;
@@ -121,12 +146,46 @@ public class ClienteConsola {
 			
 			if(coefGrado.length == 1) {
 				
-				if(coefGrado[0].equals("x")) coefGrado[0] = "1";
+				if(isValidDouble(coefGrado[0])) {
+					
+					//Caso de un doublecillo normal, monomio de grado 0
+					polinomio.add(Double.parseDouble(coefGrado[0]));
+					gradoActual++;
+					
+				}
+				else if(coefGrado[0].equals("x")) {
+					
+					//Una x solÃ­sima, bien bruto esto
+					if(gradoActual == -1) {
+						polinomio.add((double) 0.0);
+						gradoActual++;
+					}
+					
+					polinomio.add(Double.parseDouble("1"));
+					gradoActual++;
+					
+				}
+				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
+					
+					//Es un numerillo del palo ax
+					if(gradoActual == -1) {
+						polinomio.add((double) 0.0);
+						gradoActual++;
+					}
+					
+					coefGrado[0] = coefGrado[0].replaceAll("x", "");
+					polinomio.add(Double.parseDouble(coefGrado[0]));
+					
+					gradoActual++;
+					
+				}
 				
-				coefGrado[0] = coefGrado[0].replaceAll("x", "");
-				
-				polinomio.add(Double.parseDouble(coefGrado[0]));
-				gradoActual++;
+//				if(coefGrado[0].equals("x")) coefGrado[0] = "1";
+//				
+//				coefGrado[0] = coefGrado[0].replaceAll("x", "");
+//				
+//				polinomio.add(Double.parseDouble(coefGrado[0]));
+//				gradoActual++;
 				
 			}
 			else {

@@ -58,7 +58,14 @@ import java.util.concurrent.Executors;
 //						polinomio.add((double)1);
 //						polinomio.add((double)0);
 //						polinomio.add((double)1);
-//						
+						
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+//						polinomio.add((double)32);
+//						polinomio.add((double)0);
+//						polinomio.add((double)0);
+//						polinomio.add((double)1);
+						
 						CalcularRaices a = new CalcularRaices(s,polinomio);
 						pool.execute(a);
 					}catch(IOException e) {

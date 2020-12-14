@@ -245,20 +245,20 @@ public class CalcularRaices extends Thread{
 		CalcularRaiz b;
 		if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1) {
 			if(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,(cotaMaximaDer+cotaMaximaIz)/2)==1) {
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),sem,count,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -15),sem,count,s);
 				pool.execute(a);
 			}else {
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaDer+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -10),sem,count,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaDer+(cotaMaximaDer+cotaMaximaIz)/2)/2,(Double)Math.pow(10, -15),sem,count,s);
 				pool.execute(a);
 			}
 		}else {
 			Double c = (cotaMaximaDer+cotaMaximaIz)/2;			
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))==1){
-				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -10),sem,count,s);
+				a = new CalcularRaiz(this.polinomio,(cotaMaximaIz+c)/2,(Double)Math.pow(10, -15),sem,count,s);
 				pool.execute(a);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,c)-TeoremaSturm(listaDePolinomios,cotaMaximaDer))==1){
-				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -10),sem,count,s);
+				b = new CalcularRaiz(this.polinomio,(cotaMaximaDer+c)/2,(Double)Math.pow(10, -15),sem,count,s);
 				pool.execute(b);
 			}
 			if(Math.abs(TeoremaSturm(listaDePolinomios,cotaMaximaIz)-TeoremaSturm(listaDePolinomios,c))>1){				
