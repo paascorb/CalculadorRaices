@@ -256,7 +256,11 @@ public class ClienteGUI extends JFrame {
 						}
 
 					} catch (IOException e) {
-						e.printStackTrace();
+						
+						//Esto pinta la excepción. Si no queremos que aparezca el mensaje bien entonces lo descomentamos
+//						e.printStackTrace();
+						
+						tfMensajes.setText("Error al conectar con el servidor.");
 					}
 
 				}

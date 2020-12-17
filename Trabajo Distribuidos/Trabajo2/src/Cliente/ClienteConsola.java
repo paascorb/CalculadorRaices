@@ -18,7 +18,7 @@ public class ClienteConsola {
 		ArrayList<Double> polinomio = null;
 		
 		System.out.println("-------------------------------------------------");
-		System.out.println(".......BIENVENIDO AL CALCULADOR DE RA�CES........");
+		System.out.println(".......BIENVENIDO AL CALCULADOR DE RAÍCES........");
 		System.out.println("-------------------------------------------------");
 		
 		System.out.println("\n");
