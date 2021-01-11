@@ -1,22 +1,17 @@
 package Cliente;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.List;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-import java.awt.Color;
+
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.Component;
-import javax.swing.Box;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JList;
-import java.awt.List;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class VentanaInfoRaícesExtra extends JFrame {
 

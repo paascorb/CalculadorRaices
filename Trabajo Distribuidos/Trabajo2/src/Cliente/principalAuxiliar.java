@@ -1,8 +1,5 @@
 package Cliente;
 
-import java.awt.EventQueue;
-import java.util.ArrayList;
-
 public class principalAuxiliar {
 
 	public static void main(String[] args) {

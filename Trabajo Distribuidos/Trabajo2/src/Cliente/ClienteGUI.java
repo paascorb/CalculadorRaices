@@ -21,11 +21,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class ClienteGUI extends JFrame {
 
@@ -80,8 +79,7 @@ public class ClienteGUI extends JFrame {
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				// Esto muestra información sobre aquÃ­ los pibes gordos que han desarrollado la
-				// aplicaciÃ³n que estÃ¡n full gordos los pibes.
+				// Esto muestra información sobre la aplicación y los creadores.
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
@@ -101,8 +99,7 @@ public class ClienteGUI extends JFrame {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				// Al pulsar esto sale un tremendo tuto de cÃ³mo usar la aplicaciÃ³n y las vergas
-				// esas. Todo guapo emberdÃ¡.
+				// Al pulsar esto se muestra la descripción básica de la aplicación y su uso.
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
@@ -138,8 +135,7 @@ public class ClienteGUI extends JFrame {
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				// Con esto los atributos que ha recogido los manda a otra pestaÃ±ita o lo que
-				// sea y los muestra sÃºper refacheramente.
+				// Con esto los atributos que ha recogido los manda a otra pestaña y los muestra detalladamente.
 				
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
@@ -187,11 +183,9 @@ public class ClienteGUI extends JFrame {
 		btnCalcularRacies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				// Con esto recoge lo del text y manda petiÃ§ao al servidor, ahÃ­ el pibe gordo
-				// refachero.
-				// DespuÃ©s recibe las raÃ­ces y las pone en la lista. Luego recibe la info
-				// adicional y eso, y la guarda en atributos o lo que sea el man.
-				//Si no está activado el botoncito ese lo activa
+				// Con esto recoge lo del text y manda una petición al Servidor.
+				// Después, recibe las raíces. Además recibe la información adicional, y la guarda en atributos.
+				// Si no está activado el botón con el que se accede a la información, lo activa.
 
 				listRaices.removeAll();
 
@@ -206,7 +200,7 @@ public class ClienteGUI extends JFrame {
 
 					polinomio = construirPolinomio(polinomioStr);
 
-					// AHORA MANDAMOS EL MENSAJE AL SERVIDOR, OLE OLE
+					// AHORA MANDAMOS EL MENSAJE AL SERVIDOR
 
 					ObjectOutputStream out = null;
 					DataInputStream in = null;
@@ -262,7 +256,7 @@ public class ClienteGUI extends JFrame {
 
 					} catch (IOException e) {
 						
-						//Esto pinta la excepción. Si no queremos que aparezca el mensaje bien entonces lo descomentamos
+						//Esto pinta la excepción. Si no queremos que aparezca el mensaje personalizado, entonces lo descomentamos
 //						e.printStackTrace();
 						
 						tfMensajes.setText("Error al conectar con el servidor.");
@@ -331,7 +325,7 @@ private static boolean comprobarEstructura(String polStr) {
 				
 				if(isValidDouble(coefGrado[0])) {
 					
-					//Caso de un doublecillo normal, monomio de grado 0
+					//Caso de un double normal, monomio de grado 0
 					if(!isValidInt(coefGrado[0].substring(coefGrado[0].length()-1))) {
 						
 						estructuraVálida = false;
@@ -341,13 +335,13 @@ private static boolean comprobarEstructura(String polStr) {
 				}
 				else if(coefGrado[0].equals("x")) {
 					
-					//Una x solísima, bien bruto esto
+					//Una x sola
 					exponentes.add(1);
 					
 				}
 				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
 					
-					//Es un numerillo del palo ax
+					//Es un polinomio de la forma ax
 					exponentes.add(1);
 					
 				}
@@ -423,14 +417,14 @@ private static boolean comprobarEstructura(String polStr) {
 				
 				if(isValidDouble(coefGrado[0])) {
 					
-					//Caso de un doublecillo normal, monomio de grado 0
+					//Caso de un double normal, monomio de grado 0
 					polinomio.add(Double.parseDouble(coefGrado[0]));
 					gradoActual++;
 					
 				}
 				else if(coefGrado[0].equals("x")) {
 					
-					//Una x solísima, bien bruto esto
+					//Una x sola
 					if(gradoActual == -1) {
 						polinomio.add((double) 0.0);
 						gradoActual++;
@@ -442,7 +436,7 @@ private static boolean comprobarEstructura(String polStr) {
 				}
 				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
 					
-					//Es un numerillo del palo ax
+					//Es un polinomio de la forma ax
 					if(gradoActual == -1) {
 						polinomio.add((double) 0.0);
 						gradoActual++;

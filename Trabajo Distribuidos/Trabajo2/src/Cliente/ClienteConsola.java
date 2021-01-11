@@ -38,7 +38,7 @@ public class ClienteConsola {
 		
 		polinomio = construirPolinomio(polinomioStr);
 		
-		//OLE OLE, YA ESTÃ� CONSTRUIDO
+		//YA ESTÃ� CONSTRUIDO
 		//5x^4+x+1
 		System.out.println(polinomio.toString());
 		
@@ -82,7 +82,7 @@ private static boolean comprobarEstructura(String polStr) {
 				
 				if(isValidDouble(coefGrado[0])) {
 					
-					//Caso de un doublecillo normal, monomio de grado 0
+					//Caso de un double normal, monomio de grado 0
 					if(!isValidInt(coefGrado[0].substring(coefGrado[0].length()-1))) {
 						
 						estructuraVálida = false;
@@ -92,13 +92,13 @@ private static boolean comprobarEstructura(String polStr) {
 				}
 				else if(coefGrado[0].equals("x")) {
 					
-					//Una x solísima, bien bruto esto
+					//Una x sola
 					exponentes.add(1);
 					
 				}
 				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
 					
-					//Es un numerillo del palo ax
+					//Es un polinomio de la forma ax
 					exponentes.add(1);
 					
 				}
@@ -174,14 +174,14 @@ private static boolean comprobarEstructura(String polStr) {
 				
 				if(isValidDouble(coefGrado[0])) {
 					
-					//Caso de un doublecillo normal, monomio de grado 0
+					//Caso de un double normal, monomio de grado 0
 					polinomio.add(Double.parseDouble(coefGrado[0]));
 					gradoActual++;
 					
 				}
 				else if(coefGrado[0].equals("x")) {
 					
-					//Una x solísima, bien bruto esto
+					//Una x sola
 					if(gradoActual == -1) {
 						polinomio.add((double) 0.0);
 						gradoActual++;
@@ -193,7 +193,7 @@ private static boolean comprobarEstructura(String polStr) {
 				}
 				else if(isValidDouble(coefGrado[0].substring(0, coefGrado[0].length()-1)) && coefGrado[0].substring(coefGrado[0].length()-1).equals("x")) {
 					
-					//Es un numerillo del palo ax
+					//Es un polinomio de la forma ax
 					if(gradoActual == -1) {
 						polinomio.add((double) 0.0);
 						gradoActual++;
