@@ -15,15 +15,17 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 
 public class ClienteGUI extends JFrame {
 
@@ -38,6 +40,8 @@ public class ClienteGUI extends JFrame {
 	String sturm;
 	String cambiosSigno;
 	String numeroRaices;
+	
+	private JTextField tfServerIP;
 
 	/**
 	 * Launch the application.
@@ -48,6 +52,7 @@ public class ClienteGUI extends JFrame {
 				try {
 					ClienteGUI frame = new ClienteGUI();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -149,7 +154,7 @@ public class ClienteGUI extends JFrame {
 
 			}
 		});
-		btnInfo.setBounds(603, 420, 116, 22);
+		btnInfo.setBounds(603, 360, 116, 22);
 		contentPane.add(btnInfo);
 		TextField tfMensajes = new TextField();
 		tfMensajes.setEditable(false);
@@ -208,7 +213,7 @@ public class ClienteGUI extends JFrame {
 
 					try {
 
-						Socket cliente = new Socket("localhost", 48500);
+						Socket cliente = new Socket(tfServerIP.getText(), 48500);
 
 						out = new ObjectOutputStream(cliente.getOutputStream());
 						out.writeObject(polinomio);
@@ -272,12 +277,12 @@ public class ClienteGUI extends JFrame {
 
 		Label label_2 = new Label("M\u00E1s info.");
 		label_2.setFont(new Font("Arial Black", Font.BOLD, 17));
-		label_2.setBounds(603, 364, 116, 22);
+		label_2.setBounds(603, 312, 116, 22);
 		contentPane.add(label_2);
 
 		Label label_3 = new Label("de las ra\u00EDces:");
 		label_3.setFont(new Font("Arial Black", Font.BOLD, 17));
-		label_3.setBounds(603, 392, 116, 22);
+		label_3.setBounds(603, 332, 116, 22);
 		contentPane.add(label_3);
 		
 		JSeparator separator = new JSeparator();
@@ -288,10 +293,23 @@ public class ClienteGUI extends JFrame {
 		lblNewLabel.setIcon(new ImageIcon(ClienteGUI.class.getResource("/Imagenes/Bannerv2.png")));
 		lblNewLabel.setBounds(35, 31, 405, 115);
 		contentPane.add(lblNewLabel);
+		
+		Label label_2_1 = new Label("Servidor (IP):");
+		label_2_1.setFont(new Font("Arial Black", Font.BOLD, 17));
+		label_2_1.setBounds(603, 392, 116, 22);
+		contentPane.add(label_2_1);
+		
+		tfServerIP = new JTextField();
+		tfServerIP.setText("localhost");
+		tfServerIP.setBounds(603, 420, 116, 22);
+		contentPane.add(tfServerIP);
+		tfServerIP.setColumns(10);
 	}
 
 private static boolean comprobarEstructura(String polStr) {
 		
+		if(polStr == null || polStr.equals("")) return false;
+	
 		boolean estructuraVálida = true;
 		ArrayList<Integer> exponentes = new ArrayList();
 		
@@ -489,5 +507,4 @@ private static boolean comprobarEstructura(String polStr) {
 
 		return isValid;
 	}
-
 }
