@@ -46,27 +46,27 @@ public class Información extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("BlackLynx Studio");
 		lblNewLabel.setFont(new Font("Arial Black", Font.BOLD, 18));
-		lblNewLabel.setBounds(23, 21, 221, 26);
+		lblNewLabel.setBounds(23, 21, 343, 26);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblIgnacioMarcoPrez = new JLabel("Ignacio Marco P\u00E9rez");
 		lblIgnacioMarcoPrez.setFont(new Font("Arial Black", Font.BOLD, 18));
-		lblIgnacioMarcoPrez.setBounds(33, 144, 259, 26);
+		lblIgnacioMarcoPrez.setBounds(33, 144, 333, 26);
 		contentPane.add(lblIgnacioMarcoPrez);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Pablo Ascorbe Fern\u00E1ndez");
 		lblNewLabel_1_1.setFont(new Font("Arial Black", Font.BOLD, 18));
-		lblNewLabel_1_1.setBounds(33, 66, 259, 26);
+		lblNewLabel_1_1.setBounds(33, 66, 333, 26);
 		contentPane.add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("paascorb@unirioja.es");
 		lblNewLabel_1_1_1.setFont(new Font("Arial Black", Font.ITALIC, 15));
-		lblNewLabel_1_1_1.setBounds(141, 107, 189, 26);
+		lblNewLabel_1_1_1.setBounds(141, 107, 225, 26);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		JLabel lblNewLabel_1_1_2 = new JLabel("igmarco@unirioja.es");
 		lblNewLabel_1_1_2.setFont(new Font("Arial Black", Font.ITALIC, 15));
-		lblNewLabel_1_1_2.setBounds(141, 181, 189, 26);
+		lblNewLabel_1_1_2.setBounds(141, 181, 225, 26);
 		contentPane.add(lblNewLabel_1_1_2);
 	}
 }
