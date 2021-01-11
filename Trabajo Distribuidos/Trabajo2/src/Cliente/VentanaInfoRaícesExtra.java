@@ -159,17 +159,17 @@ public class VentanaInfoRaícesExtra extends JFrame {
 		
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Cambios de signo en la cota superior negativa:");
 		lblNewLabel_1_1_1_1_1.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_1.setBounds(38, 457, 415, 22);
+		lblNewLabel_1_1_1_1_1.setBounds(38, 457, 507, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_1);
 		
 		JLabel lblNewLabel_1_1_1_1_2 = new JLabel("Cambios de signo en cero:");
 		lblNewLabel_1_1_1_1_2.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_2.setBounds(38, 490, 343, 22);
+		lblNewLabel_1_1_1_1_2.setBounds(38, 490, 507, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_2);
 		
 		JLabel lblNewLabel_1_1_1_1_3 = new JLabel("Cambios de signo en la cota superior positiva");
 		lblNewLabel_1_1_1_1_3.setFont(new Font("Arial Black", Font.BOLD, 15));
-		lblNewLabel_1_1_1_1_3.setBounds(38, 523, 393, 22);
+		lblNewLabel_1_1_1_1_3.setBounds(38, 523, 507, 22);
 		contentPane.add(lblNewLabel_1_1_1_1_3);
 		
 		tfCambiosNegativa = new JTextField();
